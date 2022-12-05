@@ -39,4 +39,4 @@ def read_adc(adc_ch, vref = 3.3):
 
     return voltage
 
-print(read_adc)
+print(read_adc(0, 3.3))
