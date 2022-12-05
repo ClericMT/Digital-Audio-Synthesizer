@@ -37,4 +37,4 @@ OSC.send(target, "/rnbo/jack/transport/rolling", 1)
 while True:
     pot_1 = chan.value
     print(pot_1)
-    OSC.send(target, "/rnbo/inst/0/params/frequency/value", pot_1)
+    OSC.send(target, "/rnbo/inst/0/params/frequency", pot_1)
