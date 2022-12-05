@@ -1,42 +1,20 @@
-import time
-import spidev
-import liblo as OSC
-import sys
+import busio
+import digitalio
+import board
+import adafruit_mcp3xxx.mcp3008 as MCP
+from adafruit_mcp3xxx.analog_in import AnalogIn
 
-spi_ch = 0
+# create the spi bus
+spi = busio.SPI(clock=board.SCK, MISO=board.MISO, MOSI=board.MOSI)
 
-# Enable SPI
-spi = spidev.SpiDev(0, spi_ch)
-spi.max_speed_hz = 1200000
+# create the cs (chip select)
+cs = digitalio.DigitalInOut(board.D5)
 
-def read_adc(adc_ch, vref = 3.3):
+# create the mcp object
+mcp = MCP.MCP3008(spi, cs)
 
-    # Make sure ADC channel is 0 or 1
-    if adc_ch != 0:
-        adc_ch = 1
+# create an analog input channel on pin 0
+chan = AnalogIn(mcp, MCP.P0)
 
-    # Construct SPI message
-    #  First bit (Start): Logic high (1)
-    #  Second bit (SGL/DIFF): 1 to select single mode
-    #  Third bit (ODD/SIGN): Select channel (0 or 1)
-    #  Fourth bit (MSFB): 0 for LSB first
-    #  Next 12 bits: 0 (don't care)
-    msg = 0b11
-    msg = ((msg << 1) + adc_ch) << 5
-    msg = [msg, 0b00000000]
-    reply = spi.xfer2(msg)
-
-    # Construct single integer out of the reply (2 bytes)
-    adc = 0
-    for n in reply:
-        adc = (adc << 8) + n
-
-    # Last bit (0) is not part of ADC value, shift to remove it
-    adc = adc >> 1
-
-    # Calculate voltage form ADC value
-    voltage = (vref * adc) / 1024
-
-    return voltage
-
-print(read_adc(0, 3.3))
+print("Raw ADC Value: ", chan.value)
+print("ADC Voltage: " + str(chan.voltage) + "V")
