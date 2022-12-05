@@ -35,6 +35,6 @@ except OSC.AddressError as err:
 OSC.send(target, "/rnbo/jack/transport/rolling", 1)
 
 while True:
-    pot_1 = chan.value
+    pot_1 = chan.value / 256
     print(pot_1)
     OSC.send(target, "/rnbo/inst/0/params/frequency", pot_1)
