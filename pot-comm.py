@@ -1,5 +1,7 @@
 import time
 import spidev
+import liblo as OSC
+import sys
 
 spi_ch = 0
 
@@ -36,3 +38,5 @@ def read_adc(adc_ch, vref = 3.3):
     voltage = (vref * adc) / 1024
 
     return voltage
+
+print(read_adc)
