@@ -17,10 +17,8 @@ cs = digitalio.DigitalInOut(board.D5)
 mcp = MCP.MCP3008(spi, cs)
 
 # create an analog input channel on pin 0
-chan = AnalogIn(mcp, MCP.P0)
-
-print("Raw ADC Value: ", chan.value)
-print("ADC Voltage: " + str(chan.voltage) + "V")
+chan4 = AnalogIn(mcp, MCP.P4)
+chan2 = AnalogIn(mcp, MCP.P2)
 
 #####
 
@@ -35,6 +33,9 @@ except OSC.AddressError as err:
 OSC.send(target, "/rnbo/jack/transport/rolling", 1)
 
 while True:
-    pot_1 = chan.value / 256
+    pot_1 = chan4.value / 256
+    pot_2 = chan2.value / 256
     print(pot_1)
-    OSC.send(target, "/rnbo/inst/0/params/frequency", pot_1)
+    print(pot_2)
+    OSC.send(target, "/rnbo/inst/0/params/time", pot_1)
+    OSC.send(target, "/rnbo/inst/0/params/color", pot_2)
