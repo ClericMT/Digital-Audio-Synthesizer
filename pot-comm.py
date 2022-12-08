@@ -35,10 +35,10 @@ except OSC.AddressError as err:
 OSC.send(target, "/rnbo/jack/transport/rolling", 1)
 
 while True:
-    pot_0 = chan0.value / 256
-    pot_1 = chan1.value / 256
-    pot_2 = chan2.value / 256
-    pot_3 = chan3.value / 256
+    pot_0 = chan0.value / 256 / 2.56
+    pot_1 = chan1.value / 256 / 2.56
+    pot_2 = chan2.value / 256 / 2.56
+    pot_3 = chan3.value / 256 / 2.56
     print(pot_0)
     print(pot_1)
     print(pot_2)
