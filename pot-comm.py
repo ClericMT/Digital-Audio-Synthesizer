@@ -13,6 +13,7 @@ spi = busio.SPI(clock=board.SCK, MISO=board.MISO, MOSI=board.MOSI)
 # create the cs (chip select)
 cs = digitalio.DigitalInOut(board.D5)
 btn = digitalio.DigitalInOut(board.D2)
+btn.direction = digitalio.Direction.INPUT
 
 # create the mcp object
 mcp = MCP.MCP3008(spi, cs)
@@ -44,8 +45,9 @@ while True:
     print(pot_1)
     print(pot_2)
     print(pot_3)
-    print(btn)
+    print(btn.value)
     OSC.send(target, "/rnbo/inst/0/params/pot_one", float(pot_0))
     OSC.send(target, "/rnbo/inst/0/params/pot_two", float(pot_1))
     OSC.send(target, "/rnbo/inst/0/params/pot_three", float(pot_2))
     OSC.send(target, "/rnbo/inst/0/params/pot_four", float(pot_3))
+    OSC.send(target, "/rnbo/inst/0/params/btn", float(btn.value))
